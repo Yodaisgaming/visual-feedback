@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" width="1200" height="400" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#111a2e"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3b82f6"/>
+      <stop offset="1" stop-color="#2563eb"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="400" rx="20" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1198" height="398" rx="19" fill="none" stroke="#1e2a44" stroke-width="1"/>
+
+  <text x="60" y="74" fill="#f1f5f9" font-size="34" font-weight="700">Visual Feedback for Claude Code</text>
+  <text x="60" y="106" fill="#93a4c3" font-size="17">Click an element, say what should change, send structured feedback to your coding agent.</text>
+
+  <!-- 1. browser + pinned element -->
+  <g filter="url(#soft)">
+    <rect x="60" y="150" width="300" height="196" rx="12" fill="#16223c" stroke="#243352" stroke-width="1"/>
+    <rect x="60" y="150" width="300" height="34" rx="12" fill="#1c2b49"/>
+    <circle cx="82" cy="167" r="5" fill="#ef4d5a"/><circle cx="100" cy="167" r="5" fill="#f5b544"/><circle cx="118" cy="167" r="5" fill="#3fbf6b"/>
+    <rect x="88" y="206" width="180" height="10" rx="5" fill="#2c3c5c"/>
+    <rect x="88" y="228" width="240" height="10" rx="5" fill="#2c3c5c"/>
+    <rect x="88" y="286" width="150" height="34" rx="8" fill="none" stroke="url(#accent)" stroke-width="2" stroke-dasharray="6 5"/>
+    <text x="112" y="308" fill="#cfe0ff" font-size="14" font-weight="600">Book now</text>
+    <circle cx="238" cy="286" r="15" fill="url(#accent)"/>
+    <text x="238" y="291" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">1</text>
+  </g>
+
+  <defs><marker id="a" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#38507f"/></marker></defs>
+  <path d="M378 248 h46" stroke="#38507f" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- 2. structured JSON -->
+  <g filter="url(#soft)">
+    <rect x="452" y="150" width="330" height="196" rx="12" fill="#16223c" stroke="#243352" stroke-width="1"/>
+    <text x="476" y="184" fill="#7f8ca8" font-size="13" font-family="ui-monospace, monospace">batch.json</text>
+    <text x="476" y="214" fill="#93c5fd" font-size="14" font-family="ui-monospace, monospace">selector: <tspan fill="#e2e8f0">".btn-primary"</tspan></text>
+    <text x="476" y="238" fill="#93c5fd" font-size="14" font-family="ui-monospace, monospace">instance: <tspan fill="#e2e8f0">"2 of 6"</tspan></text>
+    <text x="476" y="262" fill="#93c5fd" font-size="14" font-family="ui-monospace, monospace">text: <tspan fill="#e2e8f0">"Book now"</tspan></text>
+    <text x="476" y="286" fill="#93c5fd" font-size="14" font-family="ui-monospace, monospace">cssBefore: <tspan fill="#e2e8f0">{ padding, color }</tspan></text>
+    <text x="476" y="310" fill="#93c5fd" font-size="14" font-family="ui-monospace, monospace">screenshot: <tspan fill="#8bd5a0">webp &#10003;</tspan></text>
+  </g>
+
+  <path d="M800 248 h46" stroke="#38507f" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- 3. agent -->
+  <g filter="url(#soft)">
+    <rect x="874" y="150" width="266" height="196" rx="12" fill="#16223c" stroke="#243352" stroke-width="1"/>
+    <rect x="874" y="150" width="266" height="34" rx="12" fill="#1c2b49"/>
+    <text x="896" y="172" fill="#93a4c3" font-size="13" font-family="ui-monospace, monospace">agent</text>
+    <text x="896" y="214" fill="#8bd5a0" font-size="14" font-family="ui-monospace, monospace">&#8250; reads batch</text>
+    <text x="896" y="238" fill="#8bd5a0" font-size="14" font-family="ui-monospace, monospace">&#8250; views screenshot</text>
+    <text x="896" y="262" fill="#8bd5a0" font-size="14" font-family="ui-monospace, monospace">&#8250; edits source</text>
+    <text x="896" y="286" fill="#e2e8f0" font-size="14" font-family="ui-monospace, monospace">&#8250; verifies</text>
+    <text x="896" y="316" fill="#f1f5f9" font-size="15" font-weight="700" font-family="ui-monospace, monospace">done <tspan fill="#3fbf6b">&#10003;</tspan></text>
+  </g>
+</svg>
