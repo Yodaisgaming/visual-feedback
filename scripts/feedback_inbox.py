@@ -68,9 +68,16 @@ def _save_shots(batch, path):
             print(f"  pin {ann.get('n')}: screenshot failed ({e})")
 
 
+def _load(f):
+    try:
+        return json.loads(f.read_text(encoding="utf-8"))
+    except (ValueError, OSError) as e:
+        sys.exit(f"could not read batch {f.name}: {e}")
+
+
 def cmd_show(args):
     f = _resolve(args.file)
-    batch = json.loads(f.read_text(encoding="utf-8"))
+    batch = _load(f)
     print(json.dumps(batch, indent=2, ensure_ascii=False))
     _save_shots(batch, f)
 

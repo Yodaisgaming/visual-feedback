@@ -1,5 +1,6 @@
 (function () {
   const isTop = window === window.top;
+  const dead = () => !(chrome.runtime && chrome.runtime.id);
   const esc = (s) => (window.CSS && CSS.escape ? CSS.escape(s) : String(s).replace(/[^a-zA-Z0-9_-]/g, "\\$&"));
   const camel = (p) => p.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 
@@ -69,6 +70,7 @@
   let active = false;
 
   const g = (window.__vfb = window.__vfb || {});
+  if (g.teardown) { try { g.teardown(); } catch (_) {} }
   if (g.listener) { try { chrome.runtime.onMessage.removeListener(g.listener); } catch (_) {} }
   const onRuntimeMessage = (msg, _sender, sendResponse) => {
     if (!msg) return false;
@@ -82,6 +84,7 @@
   };
   chrome.runtime.onMessage.addListener(onRuntimeMessage);
   g.listener = onRuntimeMessage;
+  g.teardown = unmount;
 
   function setActive(on) {
     active = on;
@@ -148,6 +151,7 @@
   }
 
   function onMove(e) {
+    if (dead()) { unmount(); return; }
     if (!e.isTrusted) return;
     const el = pickTarget(e);
     if (!el || isOurs(el)) { return; }
@@ -157,6 +161,7 @@
   }
 
   async function onClick(e) {
+    if (dead()) { unmount(); return; }
     if (!e.isTrusted) return;
     const el = pickTarget(e);
     if (isOurs(el)) return;
@@ -412,6 +417,7 @@
 
   let repositionQueued = false;
   function onScrollResize() {
+    if (dead()) { unmount(); return; }
     if (repositionQueued) return;
     repositionQueued = true;
     requestAnimationFrame(() => { repositionQueued = false; positionAllMarkers(); });
@@ -470,7 +476,7 @@
     for (const p of pins) if (!p.frameUrl) drawMarker(p);
   }
 
-  function submitPins() {
+  async function submitPins() {
     if (!pins.length) { flash("No pins to submit"); return; }
     const createdAt = new Date().toISOString();
     const batchId = crypto.randomUUID ? crypto.randomUUID() : String(Date.now());
@@ -479,7 +485,8 @@
     const pointer =
       `Take my visual feedback — batch ${fname} ` +
       `(${site ? site.host : "this page"} · ${pins.length} pin${pins.length > 1 ? "s" : ""})`;
-    if (navigator.clipboard) navigator.clipboard.writeText(pointer).catch(() => {});
+    let copied = false;
+    if (navigator.clipboard) { try { await navigator.clipboard.writeText(pointer); copied = true; } catch (_) {} }
     const batch = {
       schemaVersion: 1,
       batchId,
@@ -492,7 +499,7 @@
     flash("Submitting…");
     chrome.runtime.sendMessage({ type: "writeBatchDownload", batch }, (res) => {
       if (chrome.runtime.lastError) return flash("Failed: " + chrome.runtime.lastError.message);
-      if (res && res.ok) { flash("Saved + prompt copied. Paste into your agent."); clearPins(); }
+      if (res && res.ok) { flash(copied ? "Saved. Pointer copied, paste into your agent." : "Saved to Downloads. Clipboard was blocked."); clearPins(); }
       else flash("Failed: " + ((res && res.error) || "unknown"));
     });
   }
