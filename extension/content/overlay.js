@@ -1,7 +1,4 @@
 (function () {
-  if (window.__vfbInjected) return;
-  window.__vfbInjected = true;
-
   const isTop = window === window.top;
   const esc = (s) => (window.CSS && CSS.escape ? CSS.escape(s) : String(s).replace(/[^a-zA-Z0-9_-]/g, "\\$&"));
   const camel = (p) => p.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
@@ -71,15 +68,20 @@
   // page does, so it is the reliable authority (fixes "won't toggle off").
   let active = false;
 
-  chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+  const g = (window.__vfb = window.__vfb || {});
+  if (g.listener) { try { chrome.runtime.onMessage.removeListener(g.listener); } catch (_) {} }
+  const onRuntimeMessage = (msg, _sender, sendResponse) => {
     if (!msg) return false;
+    if (msg.type === "vfb-ping") { sendResponse({ ok: true }); return true; }
     if (msg.type === "vfb-toggle") setActive(msg.on);
     else if (msg.type === "vfb-toggle-self") { setActive(!active); sendResponse({ on: active }); return true; }
     else if (msg.type === "vfb-queryActive") { sendResponse({ on: active }); return true; }
     else if (msg.type === "vfb-addPin" && isTop) receivePin(msg.pin);
     else if (msg.type === "vfb-getPins" && isTop) { sendResponse({ pins }); return true; }
     return false;
-  });
+  };
+  chrome.runtime.onMessage.addListener(onRuntimeMessage);
+  g.listener = onRuntimeMessage;
 
   function setActive(on) {
     active = on;
@@ -109,7 +111,9 @@
   }
 
   function buildUi() {
+    for (const n of document.querySelectorAll("[data-vfb-host]")) n.remove();
     host = document.createElement("div");
+    host.setAttribute("data-vfb-host", "1");
     host.style.cssText = "position:fixed;inset:0;z-index:2147483647;pointer-events:none;display:none;";
     shadow = host.attachShadow({ mode: "closed" });
     const style = document.createElement("style");

@@ -101,6 +101,11 @@ the screenshots, resolve `pageUrl` to the project, grep the source by the stable
   or top-level coordinates (documented limitation).
 - After reloading the extension, refresh the page so a fresh content script is injected.
 
+## Credits
+
+Built by Yannick Seelig, with development assistance from Claude Code (Anthropic) and
+Codex (OpenAI).
+
 ## License
 
 MIT

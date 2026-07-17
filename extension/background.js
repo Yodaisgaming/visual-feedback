@@ -65,8 +65,11 @@ async function getActiveTabId() {
 }
 
 async function ensureInjected(tabId) {
-  // Top frame is required (the panel + toggle authority live there); it throws on
-  // restricted URLs (edge://, chrome://, store pages) — let the caller no-op.
+  const alive = await chrome.tabs
+    .sendMessage(tabId, { type: "vfb-ping" }, { frameId: 0 })
+    .then((r) => !!(r && r.ok))
+    .catch(() => false);
+  if (alive) return;
   await chrome.scripting.executeScript({ target: { tabId }, files: ["content/overlay.js"] });
   // Child frames are best-effort; a single cross-origin frame must not abort.
   try {
