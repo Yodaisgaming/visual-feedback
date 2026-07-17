@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Visual Feedback for Claude Code",
+  "version": "0.2.0",
+  "description": "Mark elements on any page and send structured feedback to your Claude Code agent.",
+
+  "permissions": ["activeTab", "scripting", "storage", "downloads"],
+  "host_permissions": ["<all_urls>"],
+
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Visual Feedback"
+  },
+
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+
+  "commands": {
+    "toggle-overlay": {
+      "suggested_key": { "default": "Alt+Shift+A" },
+      "description": "Toggle the annotation overlay"
+    }
+  }
+}
