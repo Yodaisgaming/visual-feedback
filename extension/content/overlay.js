@@ -378,7 +378,6 @@
     if (el) pinEls.set(pin.n, el);
     if (!pin.frameUrl) drawMarker(pin);
     updatePanel();
-    console.log("[VFB] pin", pin);
   }
 
   function drawMarker(pin) {

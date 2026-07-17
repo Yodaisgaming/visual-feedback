@@ -17,10 +17,10 @@ ARCHIVE = INBOX / "processed"
 
 
 def _resolve(name):
-    p = Path(name)
-    if p.is_file():
-        return p
-    cand = INBOX / re.sub(r"^visual-feedback[\\/]", "", str(name))
+    rel = re.sub(r"^visual-feedback[\\/]", "", str(name))
+    cand = (INBOX / rel).resolve()
+    if INBOX.resolve() not in cand.parents:
+        sys.exit(f"batch not found: {name}")
     if cand.is_file():
         return cand
     sys.exit(f"batch not found: {name}")

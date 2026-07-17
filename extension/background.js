@@ -1,11 +1,8 @@
 const activeTabs = new Set();
 
-chrome.runtime.onInstalled.addListener(() => {
-  console.log("Visual Feedback installed");
-});
-
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (!msg) return false;
+  if (!sender || sender.id !== chrome.runtime.id) return false;
 
   if (msg.type === "writeBatchDownload") {
     writeBatchDownload(msg.batch).then(
