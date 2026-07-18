@@ -1,0 +1,16 @@
+{
+  "name": "visual-feedback",
+  "private": true,
+  "version": "0.3.0",
+  "description": "Dev harness for the Visual Feedback extension - run the test suite with npm test.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test && python3 test/test_feedback_inbox.py"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yodaisgaming/visual-feedback.git"
+  },
+  "author": "Yannick Seelig",
+  "license": "MIT"
+}

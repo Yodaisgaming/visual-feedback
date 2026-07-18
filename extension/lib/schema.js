@@ -40,7 +40,7 @@ export function testBatch() {
       fontWeight: "600",
       padding: "6px 10px",
       color: "#ffffff",
-      background: "#0C254D",
+      backgroundColor: "#0c254d",
       display: "inline-block",
     },
     screenshot: null,

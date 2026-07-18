@@ -1,15 +1,27 @@
 {
   "manifest_version": 3,
   "name": "Visual Feedback for Claude Code",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Mark elements on any page and send structured feedback to your Claude Code agent.",
 
   "permissions": ["activeTab", "scripting", "downloads"],
-  "host_permissions": ["<all_urls>"],
+
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
 
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Visual Feedback"
+    "default_title": "Visual Feedback",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
   },
 
   "background": {

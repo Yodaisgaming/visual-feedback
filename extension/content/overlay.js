@@ -288,10 +288,18 @@
     return parts.join(" > ");
   }
 
+  function sensitiveField(el) {
+    const type = (el.getAttribute("type") || "").toLowerCase();
+    const ac = (el.getAttribute("autocomplete") || "").toLowerCase();
+    return type === "password" || ac === "one-time-code" ||
+      ac === "current-password" || ac === "new-password" || ac.startsWith("cc-");
+  }
+
   function visibleText(el) {
     const tag = el.tagName.toLowerCase();
     if (tag === "input" || tag === "textarea") {
-      return (el.getAttribute("placeholder") || el.value || "").trim().slice(0, 120);
+      const value = sensitiveField(el) ? "" : (el.value || "");
+      return (el.getAttribute("placeholder") || value || "").trim().slice(0, 120);
     }
     return (el.innerText || el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 120);
   }
