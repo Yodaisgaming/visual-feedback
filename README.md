@@ -1,6 +1,6 @@
 # Visual Feedback for Claude Code
 
-<p align="center"><img src="assets/hero.svg" alt="Click an element, describe the change, send structured feedback to your coding agent" width="100%"></p>
+<p align="center"><img src="assets/demo.webp" alt="Click an element, describe the change, send structured feedback to your coding agent" width="100%"></p>
 
 A Chrome/Edge (MV3) extension that lets you mark elements on any live page and send
 structured feedback to your local coding agent. Click an element, type what should change,
