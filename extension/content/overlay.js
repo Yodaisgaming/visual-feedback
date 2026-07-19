@@ -513,8 +513,6 @@
     const pointer =
       `Take my visual feedback — batch ${fname} ` +
       `(${site ? site.host : "this page"} · ${pins.length} pin${pins.length > 1 ? "s" : ""})`;
-    let copied = false;
-    if (navigator.clipboard) { try { await navigator.clipboard.writeText(pointer); copied = true; } catch (_) {} }
     const batch = {
       schemaVersion: 1,
       batchId,
@@ -524,10 +522,20 @@
       viewport: { w: window.innerWidth, h: window.innerHeight, dpr: window.devicePixelRatio || 1 },
       annotations: pins.map((p, i) => Object.assign({}, p, { n: i + 1 })),
     };
+    let pointerCopied = false, jsonCopied = false;
+    if (navigator.clipboard) {
+      try { await navigator.clipboard.writeText(pointer); pointerCopied = true; } catch (_) {}
+      try { await navigator.clipboard.writeText(JSON.stringify(batch, null, 2)); jsonCopied = true; } catch (_) {}
+    }
     flash("Submitting…");
     chrome.runtime.sendMessage({ type: "writeBatchDownload", batch }, (res) => {
       if (chrome.runtime.lastError) return flash("Failed: " + chrome.runtime.lastError.message);
-      if (res && res.ok) { flash(copied ? "Saved. Pointer copied, paste into your agent." : "Saved to Downloads. Clipboard was blocked."); clearPins(); }
+      if (res && res.ok) {
+        flash(jsonCopied ? "Saved. Batch JSON copied: paste it, or point your agent at the file."
+          : pointerCopied ? "Saved. Pointer copied, paste into your agent."
+          : "Saved to Downloads. Clipboard was blocked.");
+        clearPins();
+      }
       else flash("Failed: " + ((res && res.error) || "unknown"));
     });
   }

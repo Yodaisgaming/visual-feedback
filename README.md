@@ -37,9 +37,11 @@ agent edits the right thing on the first pass.
    anchored to the element, and stays glued to it while you scroll.
 3. Repeat for as many elements as you want. The panel lists every pin.
 4. Press **Submit**. The extension writes one JSON batch to `Downloads/visual-feedback/` and
-   copies a short pointer line to your clipboard.
-5. Paste the pointer into your agent session. The agent reads the newest batch, views the
-   screenshots, makes the edits, and archives the file.
+   copies the batch JSON itself to your clipboard, with a short pointer line as the previous
+   clipboard-history entry. The panel confirms what was copied.
+5. Either paste the JSON straight into your agent session, or paste the pointer and let the
+   agent read the file (the file is the better route when screenshots are on, and it is what
+   gets archived).
 
 ### Options
 
