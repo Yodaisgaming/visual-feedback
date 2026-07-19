@@ -1,7 +1,7 @@
 {
   "name": "visual-feedback",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.4.1",
   "description": "Dev harness for the Visual Feedback extension - run the test suite with npm test.",
   "type": "module",
   "scripts": {

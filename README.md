@@ -119,7 +119,7 @@ the screenshots, resolve `pageUrl` to the project, grep the source by the stable
 - Screenshots are cropped per pin, downscaled, and WebP-encoded to keep each batch small.
 - Elements inside cross-origin iframes are captured by selector and text but without a screenshot
   or top-level coordinates (documented limitation).
-- After reloading the extension, refresh the page so a fresh content script is injected.
+- After reloading the extension, just press Start again; the content script re-injects itself, no page refresh needed.
 
 ## Credits
 
