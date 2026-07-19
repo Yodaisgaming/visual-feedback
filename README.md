@@ -7,6 +7,10 @@ structured feedback to your local coding agent. Click an element, type what shou
 and the extension captures the CSS selector, the computed styles, and a cropped screenshot,
 then writes a structured JSON batch to a local inbox folder your agent reads.
 
+The screenshot part is simple: on each click the extension grabs the visible tab once, crops
+the image down to just the element you clicked, and embeds that small WebP inside the JSON
+batch. It never records the screen and never uploads anything.
+
 No account, no server, nothing leaves your machine. It loads unpacked, so there is no build
 step, no native binary, and no install script.
 
