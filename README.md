@@ -4,8 +4,9 @@
 
 A Chrome/Edge (MV3) extension that lets you mark elements on any live page and send
 structured feedback to your local coding agent. Click an element, type what should change,
-and the extension captures the CSS selector, the computed styles, and a cropped screenshot,
-then writes a structured JSON batch to a local inbox folder your agent reads.
+and the extension captures the CSS selector, the computed styles, and a cropped screenshot
+(the latter two toggleable), then writes a structured JSON batch to a local inbox folder your
+agent reads.
 
 The screenshot part is simple: on each click the extension grabs the visible tab once, crops
 the image down to just the element you clicked, and embeds that small WebP inside the JSON
@@ -40,6 +41,17 @@ agent edits the right thing on the first pass.
 5. Paste the pointer into your agent session. The agent reads the newest batch, views the
    screenshots, makes the edits, and archives the file.
 
+### Options
+
+The popup has two payload toggles, both on by default:
+
+- **Include screenshots** — off skips the capture entirely and the `screenshot` field is omitted.
+- **Include computed CSS** — off omits the `cssBefore` field.
+
+Turn both off when you want lean batches: only the element anchor, its box, and your comment
+reach the agent, which costs a fraction of the tokens. The settings persist and apply from the
+next click.
+
 ## Inbox contract
 
 One JSON file per Submit, written to `Downloads/visual-feedback/`:
@@ -69,6 +81,8 @@ One JSON file per Submit, written to `Downloads/visual-feedback/`:
   ]
 }
 ```
+
+`cssBefore` and `screenshot` are present only while their popup toggle is on.
 
 ## Agent side
 

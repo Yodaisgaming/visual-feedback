@@ -69,6 +69,24 @@
   // page does, so it is the reliable authority (fixes "won't toggle off").
   let active = false;
 
+  let includeShots = true, includeCss = true;
+  function applySettings(s) {
+    if (s && typeof s.vfbShots === "boolean") includeShots = s.vfbShots;
+    if (s && typeof s.vfbCss === "boolean") includeCss = s.vfbCss;
+  }
+  try {
+    chrome.storage.local.get({ vfbShots: true, vfbCss: true }, (s) => {
+      if (!chrome.runtime.lastError) applySettings(s);
+    });
+    chrome.storage.onChanged.addListener((ch, area) => {
+      if (area !== "local") return;
+      const s = {};
+      if (ch.vfbShots) s.vfbShots = ch.vfbShots.newValue;
+      if (ch.vfbCss) s.vfbCss = ch.vfbCss.newValue;
+      applySettings(s);
+    });
+  } catch (_) {}
+
   const g = (window.__vfb = window.__vfb || {});
   if (g.teardown) { try { g.teardown(); } catch (_) {} }
   if (g.listener) { try { chrome.runtime.onMessage.removeListener(g.listener); } catch (_) {} }
@@ -170,7 +188,7 @@
     e.stopPropagation();
     e.stopImmediatePropagation();
     const cap = capture(el);
-    cap.screenshot = await grabShot(el);
+    cap.screenshot = includeShots ? await grabShot(el) : null;
     openPopover(el, cap);
   }
 
@@ -306,11 +324,14 @@
 
   function capture(el) {
     const rect = el.getBoundingClientRect();
-    const cs = getComputedStyle(el);
-    const cssBefore = {};
-    for (const p of KEEP_CSS) {
-      const v = cs.getPropertyValue(p).trim();
-      if (v && v !== "normal" && v !== "none" && v !== "auto") cssBefore[camel(p)] = v;
+    let cssBefore = null;
+    if (includeCss) {
+      const cs = getComputedStyle(el);
+      cssBefore = {};
+      for (const p of KEEP_CSS) {
+        const v = cs.getPropertyValue(p).trim();
+        if (v && v !== "normal" && v !== "none" && v !== "auto") cssBefore[camel(p)] = v;
+      }
     }
     const selector = buildSelector(el);
     return {
@@ -363,9 +384,9 @@
       frameUrl: isTop ? null : location.href,
       anchor: cap.anchor,
       box: cap.box,
-      cssBefore: cap.cssBefore,
-      screenshot: cap.screenshot || null,
     };
+    if (cap.cssBefore) pin.cssBefore = cap.cssBefore;
+    if (cap.screenshot) pin.screenshot = cap.screenshot;
     if (isTop) pin._el = el;
     commitPin(pin);
     closePopover();

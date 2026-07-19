@@ -1,10 +1,10 @@
 {
   "manifest_version": 3,
   "name": "Visual Feedback for Claude Code",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Mark elements on any page and send structured feedback to your Claude Code agent.",
 
-  "permissions": ["activeTab", "scripting", "downloads"],
+  "permissions": ["activeTab", "scripting", "downloads", "storage"],
 
   "icons": {
     "16": "icons/icon16.png",

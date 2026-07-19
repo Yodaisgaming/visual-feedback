@@ -30,6 +30,20 @@ el("annotate").addEventListener("click", () => {
   });
 });
 
+const OPTS = [
+  ["optShots", "vfbShots"],
+  ["optCss", "vfbCss"],
+];
+chrome.storage.local.get({ vfbShots: true, vfbCss: true }, (s) => {
+  if (chrome.runtime.lastError) return;
+  for (const [id, key] of OPTS) el(id).checked = !!s[key];
+});
+for (const [id, key] of OPTS) {
+  el(id).addEventListener("change", () => {
+    chrome.storage.local.set({ [key]: el(id).checked });
+  });
+}
+
 el("test").addEventListener("click", () => {
   const btn = el("test");
   btn.disabled = true;
